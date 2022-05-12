@@ -5,7 +5,7 @@ services:
   deluge:
     #image: linuxserver/deluge
     image: calcifernl/docker-deluge-pia
-    build: docker-deluge-pia
+    build: .
     ports:
       - 8112:8112
 #      - target: 8112
