@@ -32,7 +32,7 @@ services:
       - NET_ADMIN
     devices:
       - /dev/net/tun
-    volume:
+    volumes:
       - config:/config
 
     environment:
