@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+## Deluge
+  deluge:
+    #image: linuxserver/deluge
+    image: calcifernl/docker-deluge-pia
+    build: /home/simon/github/docker-deluge-pia
+    ports:
+      - 8112:8112
+#      - target: 8112
+#        published: 8113
+#        mode: host
+      ## Incomming
+#      - target: 6881
+#        published: 6881
+#        mode: host
+
+#      - target: 6881
+#        published: 6881
+#        protocol: udp
+#        mode: host
+      ## DHT  
+#      - target: 6771
+#        published: 6771
+#        protocol: udp
+#        mode: host
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+
+
+    environment:
+      - TZ=Europe/Amsterdam
+      - PUID=33
+      - PGID=33
+      - UMAKS_SET=007
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8112"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s  
