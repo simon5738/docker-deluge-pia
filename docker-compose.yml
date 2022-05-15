@@ -3,43 +3,45 @@ version: "3.8"
 volumes:
   config:
 
+  downloads:
+#    driver: local
+#    driver_opts:
+#      type: none
+#      device: /home/simon/downloads/deluge
+#      o: bind
+
 services:
-## Deluge
   deluge:
+    ## one to the two images or the build:	
     #image: linuxserver/deluge
     #image: calcifernl/docker-deluge-pia
     build: .
+    ## Ports accessable for the outside (external port:internal port)
     ports:
+      ## HTTP interface 
       - 8112:8112
-#      - target: 8112
-#        published: 8113
-#        mode: host
-      ## Incomming
-#      - target: 6881
-#        published: 6881
-#        mode: host
-
-#      - target: 6881
-#        published: 6881
-#        protocol: udp
-#        mode: host
-      ## DHT  
-#      - target: 6771
-#        published: 6771
-#        protocol: udp
-#        mode: host
+      ## DHT
+      #- 6771:6771
+    ## Rights to control VPN tunnels
     cap_add:
       - NET_ADMIN
+    ## Access to tunnel 
     devices:
       - /dev/net/tun
+    ## Mapping of persistent storage (host:container)
     volumes:
       - config:/config
-
+      - downloads:/downloads
+    ## Variables
     environment:
       - TZ=Europe/Amsterdam
       - PUID=33
       - PGID=33
       - UMAKS_SET=007
+    ## Enviroment variables with username and password
+    ## EDIT this file!
+    env_file:
+      - secrets/pia.env
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8112"]

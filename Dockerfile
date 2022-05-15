@@ -6,9 +6,7 @@ VOLUME /downloads
 # Install openvpn and utilities
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apk update \
-#  && apk --no-cache  add bash curl iputils-ping jq openvpn \
   && apk --no-cache  add bash curl iputils jq openvpn \
-#  && apk clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY root/ /
