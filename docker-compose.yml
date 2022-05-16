@@ -23,9 +23,9 @@ services:
     ## Ports accessable for the outside (external port:internal port)
     expose:
       ## HTTP interface 
-      - 8112:8112
+      - 8112
       ## DHT
-      #- 6771:6771
+      #- 6771
     ## Rights to control VPN tunnels
     cap_add:
       - NET_ADMIN
