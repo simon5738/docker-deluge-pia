@@ -1,7 +1,7 @@
 version: "3.8"
 
 networks:
-  Portainer_traefik_backend:
+  traefik_backend:
     external: true
 
 volumes:
@@ -21,10 +21,9 @@ services:
     #image: calcifernl/docker-deluge-pia
     build: .
     ## Ports accessable for the outside (external port:internal port)
-#    ports:
+    expose:
       ## HTTP interface 
-#      - 8112:8112
-#      - 8112:8112/udp
+      - 8112:8112
       ## DHT
       #- 6771:6771
     ## Rights to control VPN tunnels
@@ -54,14 +53,10 @@ services:
       retries: 3
       start_period: 30s 
 
-    networks:
-     - Portainer_traefik_backend
-    deploy:
-      labels:
-        ## Reverse proxy
-        - traefik.enable=true
-        - traefik.http.routers.deluge.entrypoints=websecure
-        - traefik.http.routers.deluge.rule=Host("deluge.calcifer.nl")
-        - traefik.http.routers.deluge.service=deluge
-        - traefik.http.services.deluge.loadbalancer.server.port=8112
-        
+    labels:
+      ## Reverse proxy
+      - traefik.enable=true
+      - traefik.http.routers.deluge.entrypoints=websecure
+      - traefik.http.routers.deluge.rule=Host("deluge.calcifer.nl")
+      - traefik.http.routers.deluge.service=deluge
+      - traefik.http.services.deluge.loadbalancer.server.port=8112
