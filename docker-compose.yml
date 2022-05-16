@@ -56,7 +56,7 @@ services:
     labels:
       ## Reverse proxy
       - traefik.enable=true
-      - traefik.http.routers.deluge.entrypoints=websecure
+      - traefik.http.routers.deluge.entrypoints=websecure,weblocal,webhttp
       - traefik.http.routers.deluge.rule=Host("deluge.calcifer.nl")
       - traefik.http.routers.deluge.service=deluge
       - traefik.http.services.deluge.loadbalancer.server.port=8112
