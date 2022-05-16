@@ -1,9 +1,5 @@
 version: "3.8"
 
-networks:
-  traefik_backend:
-    external: true
-
 volumes:
   config:
 
@@ -42,6 +38,8 @@ services:
       - PUID=33
       - PGID=33
       - UMAKS_SET=007
+      - PIA_USER=p*******
+      - PIA_PASS=********
     ## Enviroment variables with username and password
     ## EDIT this file!
     #env_file:
@@ -60,3 +58,4 @@ services:
       - traefik.http.routers.deluge.rule=Host("deluge.calcifer.nl")
       - traefik.http.routers.deluge.service=deluge
       - traefik.http.services.deluge.loadbalancer.server.port=8112
+
