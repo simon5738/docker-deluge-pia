@@ -1,5 +1,9 @@
 version: "3.8"
 
+networks:
+  Portainer_traefik_backend:
+    external: true
+
 volumes:
   config:
 
@@ -17,9 +21,10 @@ services:
     #image: calcifernl/docker-deluge-pia
     build: .
     ## Ports accessable for the outside (external port:internal port)
-    ports:
+#    ports:
       ## HTTP interface 
-      - 8112:8112
+#      - 8112:8112
+#      - 8112:8112/udp
       ## DHT
       #- 6771:6771
     ## Rights to control VPN tunnels
@@ -40,12 +45,23 @@ services:
       - UMAKS_SET=007
     ## Enviroment variables with username and password
     ## EDIT this file!
-    env_file:
-      - secrets/pia.env
-
+    #env_file:
+    #  - secrets/pia.env
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8112"]
       interval: 1m
       timeout: 10s
       retries: 3
-      start_period: 30s  
+      start_period: 30s 
+
+    networks:
+     - Portainer_traefik_backend
+    deploy:
+      labels:
+        ## Reverse proxy
+        - traefik.enable=true
+        - traefik.http.routers.deluge.entrypoints=websecure
+        - traefik.http.routers.deluge.rule=Host("deluge.calcifer.nl")
+        - traefik.http.routers.deluge.service=deluge
+        - traefik.http.services.deluge.loadbalancer.server.port=8112
+        
